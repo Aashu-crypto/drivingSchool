@@ -19,12 +19,16 @@ import Iconify from 'src/components/iconify';
 export default function InstructorTableRow({
   selected,
   name,
+  email,
   avatarUrl,
   company,
   role,
+  balance,
+  phone,totalEarning,
   isVerified,
   status,
   handleClick,
+  whatsappNumber
 }) {
   const [open, setOpen] = useState(null);
 
@@ -52,9 +56,12 @@ export default function InstructorTableRow({
           </Stack>
         </TableCell>
 
-        <TableCell>{company}</TableCell>
+        <TableCell>{email}</TableCell>
 
-        <TableCell>{role}</TableCell>
+        <TableCell>{phone}</TableCell>
+        <TableCell>{totalEarning}</TableCell>
+        <TableCell>{balance}</TableCell>
+        <TableCell>{whatsappNumber}</TableCell>
 
         <TableCell align="center">{isVerified ? 'Yes' : 'No'}</TableCell>
 

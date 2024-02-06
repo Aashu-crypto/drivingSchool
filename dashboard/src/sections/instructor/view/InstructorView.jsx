@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -11,7 +11,12 @@ import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 import InstructorTableToolbar from '../instructor-table-toolbar';
 import { users } from 'src/_mock/user';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
 import InstructorTableRow from '../instructor-table-row';
+import TextField from '@mui/material/TextField';
 import InstructorTableHead from '../instrutor-table-head';
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
@@ -28,6 +33,24 @@ function InstructorView() {
   const [filterName, setFilterName] = useState('');
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const [openModal, setOpenModal] = useState(false);
+
+  
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+  const handleAddInstructor = () => {
+    // Add logic to handle adding a new instructor
+    // You can send a request to your server or update the local state
+    // ...
+
+    // Close the modal after adding the instructor
+    handleCloseModal();
+  };
   const handleFilterByName = (event) => {
     setPage(0);
     setFilterName(event.target.value);
@@ -39,6 +62,22 @@ function InstructorView() {
       setOrderBy(id);
     }
   };
+  const [instructorData, setInstructordata] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch('http://localhost:3000/api/v1/Instuctor/details');
+        const data = await response.json();
+        setInstructordata(data.instructor);
+        console.log('data fetched ', data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
@@ -48,9 +87,9 @@ function InstructorView() {
     }
     setSelected([]);
   };
-
+  console.log(users);
   const dataFiltered = applyFilter({
-    inputData: users,
+    inputData: instructorData,
     comparator: getComparator(order, orderBy),
     filterName,
   });
@@ -76,10 +115,30 @@ function InstructorView() {
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h4">Insturctors</Typography>
 
-        <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>
+        <Button
+          variant="contained"
+          color="inherit"
+          startIcon={<Iconify icon="eva:plus-fill" />}
+          onClick={handleOpenModal}
+        >
           Add Instructors
         </Button>
+        <Dialog open={openModal} onClose={handleCloseModal}>
+          <DialogTitle>Add Instructor</DialogTitle>
+          <DialogContent>
+            {/* Add form fields for instructor details */}
+            <TextField label="Name" fullWidth />
+            {/* Add other form fields as needed */}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseModal}>Cancel</Button>
+            <Button onClick={handleAddInstructor} variant="contained" color="primary">
+              Add
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Stack>
+
       <Card>
         <InstructorTableToolbar
           numSelected={selected.length}
@@ -116,6 +175,11 @@ function InstructorView() {
                     <InstructorTableRow
                       key={row.id}
                       name={row.name}
+                      email={row.email}
+                      phone={row.number}
+                      totalEarning={row.totalEarning}
+                      balance={row.balance}
+                      whatsappNumber={row.whatsappNumber}
                       role={row.role}
                       status={row.status}
                       company={row.company}
