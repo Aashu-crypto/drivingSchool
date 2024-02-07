@@ -1,40 +1,48 @@
 const mongoose = require("mongoose");
-mongoose.connect("mongodb+srv://ashugandotra14:aashu@cluster0.rnvjzsv.mongodb.net/");
+mongoose.connect(
+  "mongodb+srv://ashugandotra14:aashu@cluster0.rnvjzsv.mongodb.net/"
+);
+const { Schema } = mongoose;
 
-const instructorSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
+const instructorSchema = new Schema(
+  {
+    name: { type: String, required: true },
+    email: { type: String, required: true },
+    number: String,
+    totalEarning: Number,
+    balance: Number,
+    whatsappNumber: String,
+    verified: String,
+    status: String,
+    gender: String,
+    image: String, // Assuming image will be stored as a URL or file path
+    imageUrl: String,
+    address: {
+      street: String,
+      city: String,
+      state: String,
+      postalCode: String,
+    },
+    bankDetails: {
+      accountNumber: String,
+      bankName: String,
+      branch: String,
+      transitNumber: String,
+      swiftCode: String,
+      documents: [String], // Assuming documents are stored as URLs or file paths
+      documentUrls: [String],
+    },
+    carDetails: {
+      carModel: String,
+      carYear: Number, // Assuming carYear is a year, it should be a number
+      vinNumber: String,
+      licensePlate: String,
+    },
   },
-  email: {
-    type: String,
-    required: true,
-  },
-  number: {
-    type: String, // Assuming 'Number' is a string, change to Number if it's intended to be a numeric field
-    required: true,
-  },
-  totalEarning: {
-    type: Number, // Assuming 'Total Earning' is a numeric field
-    required: true,
-  },
-  balance: {
-    type: Number,
-    required: true,
-  },
-  whatsappNumber: {
-    type: String,
-  },
-  isVerified: {
-    type: Boolean,
-    default: false, // Assuming isVerified is a boolean, defaulting to false
-  },
-  status: {
-    type: String,
-  },
-});
+  { timestamps: true }
+);
 
-const Instuctor = mongoose.model("Instructor", instructorSchema);
+const Instructor = mongoose.model("Instructor", instructorSchema);
 module.exports = {
-  Instuctor,
+  Instructor,
 };

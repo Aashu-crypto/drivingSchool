@@ -20,6 +20,7 @@ import TextField from '@mui/material/TextField';
 import InstructorTableHead from '../instrutor-table-head';
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
+import InstructorDialog from '../insturctor-dialog';
 import { emptyRows, applyFilter, getComparator } from '../utils';
 function InstructorView() {
   const [page, setPage] = useState(0);
@@ -36,7 +37,6 @@ function InstructorView() {
 
   const [openModal, setOpenModal] = useState(false);
 
-  
   const handleOpenModal = () => {
     setOpenModal(true);
   };
@@ -123,21 +123,8 @@ function InstructorView() {
         >
           Add Instructors
         </Button>
-        <Dialog open={openModal} onClose={handleCloseModal}>
-          <DialogTitle>Add Instructor</DialogTitle>
-          <DialogContent>
-            {/* Add form fields for instructor details */}
-            <TextField label="Name" fullWidth />
-            {/* Add other form fields as needed */}
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseModal}>Cancel</Button>
-            <Button onClick={handleAddInstructor} variant="contained" color="primary">
-              Add
-            </Button>
-          </DialogActions>
-        </Dialog>
       </Stack>
+      <InstructorDialog openModal={openModal} handleCloseModal={handleCloseModal} />
 
       <Card>
         <InstructorTableToolbar
