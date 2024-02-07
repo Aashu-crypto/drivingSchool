@@ -22,6 +22,9 @@ import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 import InstructorDialog from '../insturctor-dialog';
 import { emptyRows, applyFilter, getComparator } from '../utils';
+import { useDispatch } from 'react-redux';
+import { instructor } from 'src/sections/redux/slice/InstructorSlice';
+
 function InstructorView() {
   const [page, setPage] = useState(0);
 
@@ -36,6 +39,7 @@ function InstructorView() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [openModal, setOpenModal] = useState(false);
+  const dispatch = useDispatch();
 
   const handleOpenModal = () => {
     setOpenModal(true);
@@ -67,9 +71,10 @@ function InstructorView() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch('http://localhost:3000/api/v1/Instuctor/details');
+        const response = await fetch(`http://localhost:3000/api/v1/Instuctor/details`);
         const data = await response.json();
         setInstructordata(data.instructor);
+        dispatch(instructor(data.instructor));
         console.log('data fetched ', data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -160,6 +165,7 @@ function InstructorView() {
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => (
                     <InstructorTableRow
+                      id={row._id}
                       key={row.id}
                       name={row.name}
                       email={row.email}

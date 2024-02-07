@@ -10,6 +10,23 @@ router.get("/details", async (req, res) => {
   });
 });
 
+router.delete("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletionResult = await Instructor.findByIdAndDelete(id);
+
+    if (!deletionResult) {
+      return res.status(404).json({ message: "Instructor not found" });
+    }
+
+    res.json({ message: "Instructor deleted successfully" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error deleting instructor", error: error.message });
+  }
+});
+
 router.post("/addInstructor", async (req, res) => {
   try {
     const { body } = req;
@@ -31,19 +48,19 @@ router.post("/addInstructor", async (req, res) => {
       bankDetails: {
         ...body.bankDetails,
         documents: body.bankDetails.documents, // Assuming this is an array of strings (URLs or file paths)
-        documentUrls: body.bankDetails.documentUrls
+        documentUrls: body.bankDetails.documentUrls,
       },
       carDetails: body.carDetails,
     });
 
     res.json({
       message: "Instructor Created Successfully",
-      instructorId: instructor._id // Return the ID of the created instructor
+      instructorId: instructor._id, // Return the ID of the created instructor
     });
   } catch (error) {
     res.status(400).json({
       message: "Error creating instructor",
-      error: error.message
+      error: error.message,
     });
   }
 });

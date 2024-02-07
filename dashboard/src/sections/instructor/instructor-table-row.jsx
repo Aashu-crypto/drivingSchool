@@ -10,10 +10,10 @@ import MenuItem from '@mui/material/MenuItem';
 import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-
+import InstructorDialog from './insturctor-dialog';
 import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
-
+import { useSelector } from 'react-redux';
 // ----------------------------------------------------------------------
 
 export default function InstructorTableRow({
@@ -24,19 +24,56 @@ export default function InstructorTableRow({
   company,
   role,
   balance,
-  phone,totalEarning,
+  phone,
+  totalEarning,
   isVerified,
   status,
   handleClick,
-  whatsappNumber
+  whatsappNumber,
+  id,
 }) {
   const [open, setOpen] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+  const instructorData = useSelector((state) => state.instructor.instructor);
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
   };
-
+  const handleEditMenu = () => {
+   
+    setOpenModal(true);
+   
+  };
   const handleCloseMenu = () => {
+    setOpen(null);
+  };
+
+  const handleDeleteMenu = async () => {
+    console.log('Id', typeof id);
+    setOpen(null);
+    try {
+      const response = await fetch(`http://localhost:3000/api/v1/Instuctor/${id}`, {
+        method: 'DELETE',
+      });
+
+      const data = await response.json();
+      console.log('Delete response:', data);
+      setOpen(null);
+
+      if (response.ok) {
+        alert('Instructor deleted successfully');
+        // Handle successful deletion (e.g., update UI)
+      } else {
+        alert('Failed to delete instructor');
+        // Handle failure
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Error deleting instructor');
+    }
     setOpen(null);
   };
 
@@ -86,12 +123,13 @@ export default function InstructorTableRow({
           sx: { width: 140 },
         }}
       >
-        <MenuItem onClick={handleCloseMenu}>
+        <MenuItem onClick={handleEditMenu}>
           <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
           Edit
         </MenuItem>
+        <InstructorDialog openModal={openModal} handleCloseModal={handleCloseModal} edit={true} />
 
-        <MenuItem onClick={handleCloseMenu} sx={{ color: 'error.main' }}>
+        <MenuItem onClick={handleDeleteMenu} sx={{ color: 'error.main' }}>
           <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
           Delete
         </MenuItem>
