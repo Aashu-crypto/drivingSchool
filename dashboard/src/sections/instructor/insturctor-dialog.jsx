@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -10,7 +10,10 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
-function InstructorDialog({ openModal, handleCloseModal, edit }) {
+import { useSelector } from 'react-redux';
+function InstructorDialog({ openModal, handleCloseModal, edit, id }) {
+  const instructorData = useSelector((state) => state.instructor.instructor).flat();
+
   const [userData, setUserData] = useState({
     name: '',
     email: '',
@@ -151,6 +154,60 @@ function InstructorDialog({ openModal, handleCloseModal, edit }) {
       },
     }));
   };
+  const [foundObject, setFoundObject] = useState();
+
+  // useEffect(() => {
+  //   // Define an async function inside useEffect
+  //   const fetchData = async () => {
+  //     try {
+  //       // Find the record asynchronously
+  //       const object = await instructorData.find(
+  //         (record) => record._id === '65c3c7d05a9114843f1714c7'
+  //       );
+
+  //       if (object) {
+  //         console.log(object);
+  //         setFoundObject(object);
+
+  //         // Update user data safely, checking for undefined object properties
+  //         setUserData((prevState) => ({
+  //           ...prevState,
+  //           name: object.name || prevState.name,
+  //           email: object.email || prevState.email,
+  //           number: object.number || prevState.number,
+  //           totalEarning: object.totalEarning || prevState.totalEarning,
+  //           balance: object.balance || prevState.balance,
+  //           whatsappNumber: object.whatsappNumber || prevState.whatsappNumber,
+  //           verified: object.verified || prevState.verified,
+  //           status: object.status || prevState.status,
+  //           gender: object.gender || prevState.gender,
+  //           image: object.image || prevState.image,
+  //           imageUrl: object.imageUrl || prevState.imageUrl,
+  //           bankDetails: {
+  //             ...prevState.bankDetails,
+  //             accountNumber:
+  //               object.bankDetails?.accountNumber || prevState.bankDetails.accountNumber,
+  //             bankName: object.bankDetails?.bankName || prevState.bankDetails.bankName,
+  //             documents: object.bankDetails?.documents || prevState.bankDetails.documents,
+  //             documentUrls: object.bankDetails?.documentUrls || prevState.bankDetails.documentUrls,
+  //           },
+  //           carDetails: {
+  //             ...prevState.carDetails,
+  //             licensePlate: object.carDetails?.licensePlate || prevState.carDetails.licensePlate,
+  //             // Assuming you handle missing car details elsewhere or they can remain as previously set
+  //           },
+  //           // No change to address details if they're not available
+  //         }));
+  //       }
+  //     } catch (error) {
+  //       // Handle any errors that occur during fetch
+  //       console.error('Failed to fetch instructor data', error);
+  //     }
+  //   };
+
+  //   // Call the async function
+  //   fetchData();
+  // }, [instructorData]);
 
   return (
     <Dialog open={openModal} onClose={handleCloseModal} maxWidth="md" fullWidth={true}>
@@ -173,6 +230,10 @@ function InstructorDialog({ openModal, handleCloseModal, edit }) {
                 )}
               </FormControl>
             </Grid>
+            {instructorData.map((i, index) => {
+              return <h1>{i._id}</h1>;
+            })}
+            {foundObject && <div>Found Object: {JSON.stringify(foundObject)}</div>}
             <Grid item xs={6}>
               <TextField
                 label="Name"

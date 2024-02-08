@@ -43,9 +43,9 @@ export default function InstructorTableRow({
     setOpen(event.currentTarget);
   };
   const handleEditMenu = () => {
-   
+    console.log('data', instructorData);
+    console.log('flatData', instructorData.flat());
     setOpenModal(true);
-   
   };
   const handleCloseMenu = () => {
     setOpen(null);
@@ -97,7 +97,7 @@ export default function InstructorTableRow({
 
         <TableCell>{phone}</TableCell>
         <TableCell>{totalEarning}</TableCell>
-        <TableCell>{balance}</TableCell>
+        <TableCell>{id}</TableCell>
         <TableCell>{whatsappNumber}</TableCell>
 
         <TableCell align="center">{isVerified ? 'Yes' : 'No'}</TableCell>
@@ -127,7 +127,7 @@ export default function InstructorTableRow({
           <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
           Edit
         </MenuItem>
-        <InstructorDialog openModal={openModal} handleCloseModal={handleCloseModal} edit={true} />
+        <InstructorDialog openModal={openModal} handleCloseModal={handleCloseModal} edit={'1'} id={id} />
 
         <MenuItem onClick={handleDeleteMenu} sx={{ color: 'error.main' }}>
           <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />

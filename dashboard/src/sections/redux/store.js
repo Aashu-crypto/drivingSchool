@@ -10,7 +10,7 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist';
-import storage from 'redux-persist/lib/storage'
+import storage from 'redux-persist/lib/storage';
 const rootReducer = combineReducers({
   instructor: instructorSlice,
 });
@@ -18,7 +18,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: 'root',
   storage: storage,
-  blacklist: [],
+  blacklist: ['instructor'],
 };
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
