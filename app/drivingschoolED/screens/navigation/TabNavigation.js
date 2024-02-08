@@ -25,11 +25,16 @@ const TabNavigation = () => {
         options={{
           tabBarIcon: ({focused}) => (
             <View style={{padding: 5}}>
-              <Icon name="home" size={30} color={focused ? '#fff' : null} />
+              <Icon
+                name="home"
+                size={30}
+                color={focused ? '#fff' : '#D3D3D3'}
+              />
             </View>
           ),
 
-          tabBarActiveTintColor: "#fff",
+          tabBarActiveTintColor: '#fff',
+          tabBarInactiveTintColor: '#D3D3D3',
         }}
       />
       <Tab.Screen
@@ -41,11 +46,12 @@ const TabNavigation = () => {
               <MaterialIcon
                 name="class"
                 size={26}
-                color={focused ? '#fff' : null}
+                color={focused ? '#fff' : '#D3D3D3'}
               />
             </View>
           ),
-          tabBarActiveTintColor: "#fff",
+          tabBarActiveTintColor: '#fff',
+          tabBarInactiveTintColor: '#D3D3D3',
         }}
       />
       <Tab.Screen
@@ -54,10 +60,15 @@ const TabNavigation = () => {
         options={{
           tabBarIcon: ({focused}) => (
             <View style={{padding: 5}}>
-              <Icon name="user" size={26} color={focused ? '#fff' : null} />
+              <Icon
+                name="user"
+                size={26}
+                color={focused ? '#fff' : '#D3D3D3'}
+              />
             </View>
           ),
-          tabBarActiveTintColor: "#fff",
+          tabBarActiveTintColor: '#fff',
+          tabBarInactiveTintColor: '#D3D3D3',
         }}
       />
     </Tab.Navigator>

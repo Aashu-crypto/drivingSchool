@@ -32,14 +32,14 @@ const MyClasses = () => {
       />
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
         <View style={{justifyContent: 'space-evenly', flex: 1}}>
-          <View style={{alignItems: 'center',}}>
+          <View style={{alignItems: 'center'}}>
             <Image
               source={require('../../assets/img/myclassesCar2.png')}
               style={{width: 300, height: 150}}
             />
-            <Text>No Classes Here Yet!</Text>
+            <Text style={{color: '#000'}}>No Classes Here Yet!</Text>
           </View>
-          <View style ={{alignItems: 'center',}}>
+          <View style={{alignItems: 'center'}}>
             <Text>Contact your Insrtuctor to </Text>
             <Text>Start Your Class !</Text>
           </View>

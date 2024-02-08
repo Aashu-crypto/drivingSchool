@@ -1,5 +1,6 @@
 import {
   Pressable,
+  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -10,10 +11,12 @@ import LottieView from 'lottie-react-native';
 
 import Button from '../../components/Button';
 import {useNavigation} from '@react-navigation/native';
+import { Color } from '../../config/GlobalStyles';
 const HomeScreen = () => {
   const navigation = useNavigation();
   return (
     <View style={{flex: 1, justifyContent: 'space-evenly'}}>
+      <StatusBar backgroundColor={Color.appDefaultColor} barStyle="dark-content" />
       <View style={{justifyContent: 'center', alignItems: 'center'}}>
         <Text
           style={{
