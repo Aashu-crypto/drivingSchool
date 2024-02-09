@@ -16,7 +16,7 @@ root.render(
     <PersistGate loading={null} persistor={persistor}>
       <HelmetProvider>
         <BrowserRouter>
-          <Suspense>
+          <Suspense fallback={<div>Loading...</div>}>
             <App />
           </Suspense>
         </BrowserRouter>

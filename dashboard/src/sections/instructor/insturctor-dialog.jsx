@@ -116,20 +116,37 @@ function InstructorDialog({ openModal, handleCloseModal, edit, id }) {
   };
 
   const handleAddInstructor = () => {
-    fetch('http://localhost:3000/api/v1/Instuctor/addInstructor', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(userData),
-    })
-      .then((response) => response.json())
-      .then((data) => console.log('Success:', data))
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-    console.log('Instructor added', userData);
-    handleCloseModal();
+    if (edit == 1) {
+      fetch(`http://localhost:3000/api/v1/Instuctor/updateInstructor/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      })
+        .then((response) => response.json())
+        .then((data) => console.log('Success:', data))
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+      console.log('Instructor added', userData);
+      handleCloseModal();
+    } else {
+      fetch('http://localhost:3000/api/v1/Instuctor/addInstructor', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      })
+        .then((response) => response.json())
+        .then((data) => console.log('Success:', data))
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+      console.log('Instructor added', userData);
+      handleCloseModal();
+    }
   };
   const handleFormSubmit = (e) => {
     e.preventDefault(); // Prevent default form submission
@@ -156,58 +173,75 @@ function InstructorDialog({ openModal, handleCloseModal, edit, id }) {
   };
   const [foundObject, setFoundObject] = useState();
 
-  // useEffect(() => {
-  //   // Define an async function inside useEffect
-  //   const fetchData = async () => {
-  //     try {
-  //       // Find the record asynchronously
-  //       const object = await instructorData.find(
-  //         (record) => record._id === '65c3c7d05a9114843f1714c7'
-  //       );
+  useEffect(() => {
+    // Define an async function inside useEffect
+    if (instructorData && instructorData.length > 0) {
+      console.log('id', id);
+      const fetchData = async () => {
+        try {
+          // Find the record asynchronously
+          const object = await instructorData.find((record) => record._id == id);
 
-  //       if (object) {
-  //         console.log(object);
-  //         setFoundObject(object);
+          if (object) {
+            console.log(object);
+            setFoundObject(object);
 
-  //         // Update user data safely, checking for undefined object properties
-  //         setUserData((prevState) => ({
-  //           ...prevState,
-  //           name: object.name || prevState.name,
-  //           email: object.email || prevState.email,
-  //           number: object.number || prevState.number,
-  //           totalEarning: object.totalEarning || prevState.totalEarning,
-  //           balance: object.balance || prevState.balance,
-  //           whatsappNumber: object.whatsappNumber || prevState.whatsappNumber,
-  //           verified: object.verified || prevState.verified,
-  //           status: object.status || prevState.status,
-  //           gender: object.gender || prevState.gender,
-  //           image: object.image || prevState.image,
-  //           imageUrl: object.imageUrl || prevState.imageUrl,
-  //           bankDetails: {
-  //             ...prevState.bankDetails,
-  //             accountNumber:
-  //               object.bankDetails?.accountNumber || prevState.bankDetails.accountNumber,
-  //             bankName: object.bankDetails?.bankName || prevState.bankDetails.bankName,
-  //             documents: object.bankDetails?.documents || prevState.bankDetails.documents,
-  //             documentUrls: object.bankDetails?.documentUrls || prevState.bankDetails.documentUrls,
-  //           },
-  //           carDetails: {
-  //             ...prevState.carDetails,
-  //             licensePlate: object.carDetails?.licensePlate || prevState.carDetails.licensePlate,
-  //             // Assuming you handle missing car details elsewhere or they can remain as previously set
-  //           },
-  //           // No change to address details if they're not available
-  //         }));
-  //       }
-  //     } catch (error) {
-  //       // Handle any errors that occur during fetch
-  //       console.error('Failed to fetch instructor data', error);
-  //     }
-  //   };
+            // Update user data safely, checking for undefined object properties
+            setUserData((prevState) => ({
+              ...prevState,
+              name: object.name || prevState.name,
+              email: object.email || prevState.email,
+              number: object.number || prevState.number,
+              totalEarning: object.totalEarning || prevState.totalEarning,
+              balance: object.balance || prevState.balance,
+              whatsappNumber: object.whatsappNumber || prevState.whatsappNumber,
+              verified: object.verified || prevState.verified,
+              status: object.status || prevState.status,
+              gender: object.gender || prevState.gender,
+              image: object.image || prevState.image,
+              imageUrl: object.imageUrl || prevState.imageUrl,
+              bankDetails: {
+                ...prevState.bankDetails,
+                accountNumber:
+                  object.bankDetails?.accountNumber || prevState.bankDetails.accountNumber,
+                bankName: object.bankDetails?.bankName || prevState.bankDetails.bankName,
+                documents: object.bankDetails?.documents || prevState.bankDetails.documents,
+                documentUrls:
+                  object.bankDetails?.documentUrls || prevState.bankDetails.documentUrls,
+                accountNumber: '',
 
-  //   // Call the async function
-  //   fetchData();
-  // }, [instructorData]);
+                branch: object.bankDetails?.branch || prevState.bankDetails.branch,
+                transitNumber:
+                  object.bankDetails?.transitNumber || prevState.bankDetails.transitNumber,
+                swiftCode: object.bankDetails?.swiftCode || prevState.bankDetails.swiftCode,
+              },
+              carDetails: {
+                ...prevState.carDetails,
+                licensePlate: object.carDetails?.licensePlate || prevState.carDetails.licensePlate,
+                carModel: object.carDetails?.carModel || prevState.carDetails.carModel,
+                carYear: object.carDetails?.carYear || prevState.carDetails.carYear,
+                vinNumber: object.carDetails?.vinNumber || prevState.carDetails.vinNumber,
+                // Assuming you handle missing car details elsewhere or they can remain as previously set
+              },
+              address: {
+                ...prevState.address,
+                street: object.address?.street || prevState.address.street,
+                city: object.address?.city || prevState.address.city,
+                state: object.address?.state || prevState.address.state,
+                postalCode: object.address?.postalCode || prevState.address.postalCode,
+              },
+            }));
+          }
+        } catch (error) {
+          // Handle any errors that occur during fetch
+          console.error('Failed to fetch instructor data', error);
+        }
+      };
+
+      // Call the async function
+      fetchData();
+    }
+  }, []);
 
   return (
     <Dialog open={openModal} onClose={handleCloseModal} maxWidth="md" fullWidth={true}>
@@ -537,7 +571,7 @@ function InstructorDialog({ openModal, handleCloseModal, edit, id }) {
         <DialogActions>
           <Button onClick={handleCloseModal}>Cancel</Button>
           <Button onClick={handleAddInstructor} variant="contained" color="primary">
-            Add
+            {edit == 1 ? 'Edit' : 'Add'}
           </Button>
         </DialogActions>
       </form>
