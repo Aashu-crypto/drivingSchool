@@ -1,10 +1,11 @@
 const express = require("express");
+const crypto = require("crypto");
 const bcrypt = require("bcrypt");
 const { Instructor } = require("../db");
 const { generatePassword } = require("../utils/passwordUtils");
+const { SendMail } = require("../controllers/SendMail");
 const router = express.Router();
-const API_KEY =
-  "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";
+
 router.get("/details", async (req, res) => {
   const instructor = await Instructor.find();
 
@@ -63,7 +64,7 @@ router.delete("/:id", async (req, res) => {
 router.post("/addInstructor", async (req, res) => {
   try {
     const { body } = req;
-    const newPassword = generatePassword();
+    const newPassword = crypto.randomBytes(10).toString("hex");
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
     // Create a new Instructor document with all fields from the schema
@@ -102,6 +103,7 @@ router.post("/addInstructor", async (req, res) => {
         licensePlate: body.carDetails.licensePlate,
       },
     });
+    SendMail(body.name, body.email, hashedPassword);
 
     // Respond with the created instructor's ID and a success message
     res.json({
